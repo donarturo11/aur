@@ -34,7 +34,9 @@ pkgbase = muse
 	provides = muse
 	conflicts = muse
 	source = https://github.com/muse-sequencer/muse/releases/download/muse_3_1_0/muse-3.1.tar.gz
+	source = muse-qt515.patch
 	sha256sums = b2d5c57ea30607cd9f7bea8b5d6488c54de732a1565db8e88f5536c1e478e875
+	sha256sums = a45513daed5bd3c8434b9a1ae05e5ea64a286e3347a5c5deb4103a8218f2a89d
 
 pkgname = muse
 

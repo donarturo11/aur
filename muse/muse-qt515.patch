@@ -1,0 +1,148 @@
+diff -ruN muse-3.1.orig/awl/knob.h muse-3.1/awl/knob.h
+--- muse-3.1.orig/awl/knob.h	2018-12-20 22:06:56.000000000 +0100
++++ muse-3.1/awl/knob.h	2020-06-22 23:15:25.748985095 +0200
+@@ -22,6 +22,11 @@
+ 
+ #ifndef __AWLKNOB_H__
+ #define __AWLKNOB_H__
++#include <QPainterPath>
++#include <QPaintEvent>
++#include <QString>
++#include <QMouseEvent>
++#include <QSize>
+ 
+ #include "aslider.h"
+ // #include <QtDesigner/QDesignerExportWidget>
+diff -ruN muse-3.1.orig/awl/slider.h muse-3.1/awl/slider.h
+--- muse-3.1.orig/awl/slider.h	2018-12-20 22:06:56.000000000 +0100
++++ muse-3.1/awl/slider.h	2020-06-22 23:15:24.325659473 +0200
+@@ -22,6 +22,11 @@
+ 
+ #ifndef __AWLSLIDER_H__
+ #define __AWLSLIDER_H__
++#include <QPainterPath>
++#include <QPaintEvent>
++#include <QString>
++#include <QMouseEvent>
++#include <QSize>
+ 
+ #include "aslider.h"
+ 
+diff -ruN muse-3.1.orig/muse/components/slider.h muse-3.1/muse/components/slider.h
+--- muse-3.1.orig/muse/components/slider.h	2018-12-20 22:06:56.000000000 +0100
++++ muse-3.1/muse/components/slider.h	2020-06-22 23:51:28.077270758 +0200
+@@ -26,7 +26,11 @@
+ 
+ #ifndef __SLIDER_H__
+ #define __SLIDER_H__
+-
++#include <QPainterPath>
++#include <QPaintEvent>
++#include <QString>
++#include <QMouseEvent>
++#include <QSize>
+ #include "sclif.h"
+ #include "sliderbase.h"
+ #include "scldraw.h"
+diff -ruN muse-3.1.orig/muse/components/utils.h muse-3.1/muse/components/utils.h
+--- muse-3.1.orig/muse/components/utils.h	2020-02-13 21:10:20.000000000 +0100
++++ muse-3.1/muse/components/utils.h	2020-06-22 23:52:54.353470026 +0200
+@@ -22,7 +22,11 @@
+ 
+ #ifndef __UTILS_H__
+ #define __UTILS_H__
+-
++#include <QPainterPath>
++#include <QPaintEvent>
++#include <QString>
++#include <QMouseEvent>
++#include <QSize>
+ #include <stdint.h>
+ 
+ #define MAX(a,b) (((a)>(b))?(a):(b))
+diff -ruN muse-3.1.orig/muse/midiedit/scoreedit.h muse-3.1/muse/midiedit/scoreedit.h
+--- muse-3.1.orig/muse/midiedit/scoreedit.h	2020-02-13 21:10:20.000000000 +0100
++++ muse-3.1/muse/midiedit/scoreedit.h	2020-06-23 00:06:31.599042627 +0200
+@@ -28,6 +28,7 @@
+ #include <QLabel>
+ #include <QKeyEvent>
+ #include <QPainter>
++#include <QPainterPath>
+ #include <QPixmap>
+ #include <QTimer>
+ #include <QScrollBar>
+diff -ruN muse-3.1.orig/muse/mixer/routedialog.h muse-3.1/muse/mixer/routedialog.h
+--- muse-3.1.orig/muse/mixer/routedialog.h	2020-02-13 21:10:20.000000000 +0100
++++ muse-3.1/muse/mixer/routedialog.h	2020-06-22 23:56:27.125650674 +0200
+@@ -38,6 +38,7 @@
+ #include <QString>
+ #include <QItemSelectionModel>
+ #include <QPainter>
++#include <QPainterPath>
+ #include <QColor>
+ #include <QResizeEvent>
+ #include <QPaintEvent>
+diff -ruN muse-3.1.orig/muse/widgets/cpu_toolbar.cpp muse-3.1/muse/widgets/cpu_toolbar.cpp
+--- muse-3.1.orig/muse/widgets/cpu_toolbar.cpp	2020-02-13 21:49:40.000000000 +0100
++++ muse-3.1/muse/widgets/cpu_toolbar.cpp	2020-06-22 23:32:13.313526650 +0200
+@@ -137,13 +137,13 @@
+   _resetButton->setObjectName("CpuLoadToolbarButton");
+   _resetButton->setToolTip(tr("CPU load averaged over each gui-update period\nDSP load read from JACK\nNumber of xruns\n(click to reset)"));
+ 
+-  _cpuLabel = new PaddedValueLabel(true, this, 0, "CPU:", "%");
++  _cpuLabel = new PaddedValueLabel(true, this, Qt::Widget, "CPU:", "%");
+   _cpuLabel->setFieldWidth(5);
+   _cpuLabel->setPrecision(1);
+-  _dspLabel = new PaddedValueLabel(true, this, 0, "DSP:", "%");
++  _dspLabel = new PaddedValueLabel(true, this, Qt::Widget, "DSP:", "%");
+   _dspLabel->setFieldWidth(5);
+   _dspLabel->setPrecision(1);
+-  _xrunsLabel = new PaddedValueLabel(false, this, 0, "XRUNS:");
++  _xrunsLabel = new PaddedValueLabel(false, this, Qt::Widget, "XRUNS:");
+   _xrunsLabel->setFieldWidth(3);
+ 
+   setValues(0.0f, 0.0f, 0);
+diff -ruN muse-3.1.orig/muse/widgets/cpu_toolbar.h muse-3.1/muse/widgets/cpu_toolbar.h
+--- muse-3.1.orig/muse/widgets/cpu_toolbar.h	2018-12-20 22:06:56.000000000 +0100
++++ muse-3.1/muse/widgets/cpu_toolbar.h	2020-06-22 23:25:50.295601636 +0200
+@@ -56,7 +56,7 @@
+       void updateText();
+       
+     public:
+-      PaddedValueLabel(bool isFloat = false, QWidget* parent = 0, Qt::WindowFlags f = 0, 
++      PaddedValueLabel(bool isFloat = false, QWidget* parent = 0, Qt::WindowFlags f = Qt::Widget, 
+                        const QString& prefix = QString(), const QString& suffix = QString());
+ 
+       void setFieldWidth(int val);
+diff -ruN muse-3.1.orig/muse/widgets/meter.cpp muse-3.1/muse/widgets/meter.cpp
+--- muse-3.1.orig/muse/widgets/meter.cpp	2019-11-04 20:49:11.000000000 +0100
++++ muse-3.1/muse/widgets/meter.cpp	2020-06-22 23:35:30.932456057 +0200
+@@ -26,9 +26,7 @@
+ 
+ #include "muse_math.h"
+ 
+-#include <QMouseEvent>
+-#include <QPainter>
+-#include <QResizeEvent>
++
+ #include <QVector>
+ #include <QLocale>
+ #include <algorithm>
+diff -ruN muse-3.1.orig/muse/widgets/meter.h muse-3.1/muse/widgets/meter.h
+--- muse-3.1.orig/muse/widgets/meter.h	2018-12-20 22:06:56.000000000 +0100
++++ muse-3.1/muse/widgets/meter.h	2020-06-22 23:37:10.761915234 +0200
+@@ -30,10 +30,10 @@
+ #include <QFrame>
+ #include <QTimer>
+ 
+-class QResizeEvent;
+-class QMouseEvent;
+-class QPainter;
+-class QPainterPath;
++#include <QResizeEvent>
++#include <QMouseEvent>
++#include <QPainter>
++#include <QPainterPath>
+ 
+ #include <QBitmap>
+ 
